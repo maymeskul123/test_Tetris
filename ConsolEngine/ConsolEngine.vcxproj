@@ -89,11 +89,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BaseApp.cpp" />
+    <ClCompile Include="Figure.cpp" />
+    <ClCompile Include="Glass.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TestApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseApp.h" />
+    <ClInclude Include="Figure.h" />
+    <ClInclude Include="Glass.h" />
     <ClInclude Include="PerformanceCounter.h" />
     <ClInclude Include="TestApp.h" />
   </ItemGroup>

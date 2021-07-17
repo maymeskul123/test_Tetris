@@ -16,6 +16,12 @@
     <ClCompile Include="TestApp.cpp">
       <Filter>sources</Filter>
     </ClCompile>
+    <ClCompile Include="Figure.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Glass.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseApp.h">
@@ -25,6 +31,12 @@
       <Filter>sources</Filter>
     </ClInclude>
     <ClInclude Include="TestApp.h">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Figure.h">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Glass.h">
       <Filter>sources</Filter>
     </ClInclude>
   </ItemGroup>

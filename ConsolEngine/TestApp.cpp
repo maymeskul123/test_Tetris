@@ -1,6 +1,7 @@
 // Copyright 2009-2014 Blam Games, Inc. All Rights Reserved.
 
 #include "TestApp.h"
+#include "Figure.h"
 
 TestApp::TestApp() : Parent(100, 80)
 {
@@ -9,6 +10,13 @@ TestApp::TestApp() : Parent(100, 80)
 	mObj1YOld = mObj1Y = 10;
 	mObj2X = 10;
 	mObj2Y = 12;
+
+	endTime = 1.0;
+	curTime = 0.0;
+	
+	myFigure = new Figure();
+	myGlass = new Glass();
+	myFigure->NewFigure();
 }
 
 void TestApp::KeyPressed(int btnCode)
@@ -18,9 +26,11 @@ void TestApp::KeyPressed(int btnCode)
 	else if (btnCode == 115) //s
 		mObj1Y++;
 	else if (btnCode == 97) //a
-		mObj1X--;
+		myFigure->MoveLeft();
 	else if (btnCode == 100) //d
-		mObj1X++;
+		myFigure->MoveRight();
+	else if (btnCode == 32) // |____|
+		myFigure->Rotation();
 
 	if (mObj1X < 0)
 		mObj1X = 0;
@@ -35,26 +45,41 @@ void TestApp::KeyPressed(int btnCode)
 
 void TestApp::UpdateF(float deltaTime)
 {
-	SetChar(mObj1XOld, mObj1YOld, L' ');
-	SetChar(mObj1X, mObj1Y, L'O');
+	
+	myGlass->DrawGlass(this);
 
-	mObj1XOld = mObj1X;
-	mObj1YOld = mObj1Y;
-
-	//-----------------------------
-
-	SetChar(mObj2X, mObj2Y, L' ');
-	if (mDirection)
-	{
-		mObj2X++;
-		if (mObj2X == 40)
-			mDirection = false;
+	if (curTime > endTime) {
+		curTime = 0.0;
+		myFigure->MoveDown();
 	}
-	else
-	{
-		mObj2X--;
-		if (mObj2X == 10)
-			mDirection = true;
+	else {
+		curTime = curTime + deltaTime;		
 	}
-	SetChar(mObj2X, mObj2Y, L'F');
+	myFigure->ShowFigure(this);
+
+	//SetChar(mObj1XOld, mObj1YOld, L' ');
+	//SetChar(mObj1X, mObj1Y, L'O');
+
+	//mObj1XOld = mObj1X;
+	//mObj1YOld = mObj1Y;
+
+	////-----------------------------
+
+	//SetChar(mObj2X, mObj2Y, L' ');
+	//if (mDirection)
+	//{
+	//	mObj2X++;
+	//	if (mObj2X == 40)
+	//		mDirection = false;
+	//}
+	//else
+	//{
+	//	mObj2X--;
+	//	if (mObj2X == 10)
+	//		mDirection = true;
+	//}
+	//SetChar(mObj2X, mObj2Y, L'F');
+	/*char    buf[4096], *p = buf;
+	sprintf(buf, "%d\n", myFigure->num);
+	OutputDebugStringA(buf);*/
 }

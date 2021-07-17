@@ -3,6 +3,8 @@
 #pragma once
 
 #include "BaseApp.h"
+#include "Figure.h"
+#include "Glass.h"
 
 class TestApp : public BaseApp
 {
@@ -16,10 +18,15 @@ class TestApp : public BaseApp
 
 		int mObj2X;
 		int mObj2Y;
+		float curTime, endTime;
 
 		bool mDirection;
+		
+		
 
 	public:
+		Figure *myFigure;
+		Glass * myGlass;
 		TestApp();
 		virtual void KeyPressed(int btnCode);
 		virtual void UpdateF(float deltaTime);
