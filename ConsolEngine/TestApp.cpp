@@ -54,7 +54,6 @@ void TestApp::UpdateF(float deltaTime)
 			myGlass->AddFigure(myFigure);
 			myFigure->~Figure();
 			myFigure = new Figure();
-
 		}
 		
 		//int *point = myFigure->GetExtrRight();
