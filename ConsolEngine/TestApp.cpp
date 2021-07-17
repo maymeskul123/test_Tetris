@@ -16,7 +16,7 @@ TestApp::TestApp() : Parent(100, 80)
 	
 	myFigure = new Figure();
 	myGlass = new Glass();
-	myFigure->NewFigure();
+	//myFigure->NewFigure();
 }
 
 void TestApp::KeyPressed(int btnCode)
@@ -24,7 +24,8 @@ void TestApp::KeyPressed(int btnCode)
 	if (btnCode == 119) //w
 		mObj1Y--;
 	else if (btnCode == 115) //s
-		mObj1Y++;
+		//mObj1Y++;
+		myFigure->MoveDown();
 	else if (btnCode == 97) //a
 		myFigure->MoveLeft();
 	else if (btnCode == 100) //d
@@ -44,16 +45,26 @@ void TestApp::KeyPressed(int btnCode)
 }
 
 void TestApp::UpdateF(float deltaTime)
-{
-	
+{	
 	myGlass->DrawGlass(this);
 
 	if (curTime > endTime) {
 		curTime = 0.0;
-		myFigure->MoveDown();
+		if (myFigure->MoveDown()) {
+			myGlass->AddFigure(myFigure);
+			myFigure->~Figure();
+			myFigure = new Figure();
+
+		}
+		
+		//int *point = myFigure->GetExtrRight();
+		//int* test = myGlass->GetDataXY(5, 19);
+		/*char    buf[4096], *p = buf;
+		sprintf(buf, "%d %d %d %d %X\n", test[0], test[1], test[2], test[3], &test);
+		OutputDebugStringA(buf);*/
 	}
 	else {
-		curTime = curTime + deltaTime;		
+		curTime = curTime + deltaTime;
 	}
 	myFigure->ShowFigure(this);
 

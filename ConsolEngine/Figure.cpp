@@ -1,5 +1,7 @@
 #include "Figure.h"
 #include <cstdlib>
+#include <time.h>
+//#include <iostream>
 #include <sstream>
 #include "TestApp.h"
 #include <algorithm>
@@ -9,69 +11,70 @@
 Figure::Figure()
 {
 	x = 8;
-	y = 1;
+	y = 0;
 	glass = new Glass();
+	RandFigure();
 }
 
-void Figure::NewFigure() 
+void Figure::RandFigure() 
 {
-	int figures[128] = { ' ', ' ',' ',' ',
+	int figures[128] = { 
+			' ', ' ',' ',' ',
 			' ', '1', ' ', ' ',
 			' ', '1', '1', '1',
 			' ', ' ', ' ', ' '
 		,
-		' ', ' ',' ',' ',
+			' ', ' ',' ',' ',
 			' ', '1', '1', '1',
 			' ', '1', ' ', ' ',
-			' ', ' ', ' ', ' '
+			' ', ' ', ' ', ' '		
 		,
-		' ', ' ',' ',' ',
-		' ', '1', '1', '1',
-		' ', '1', ' ', ' ',
-		' ', ' ', ' ', ' '
-		,
-		' ', ' ',' ',' ',
+			' ', ' ',' ',' ',
 			'1', '1', ' ', ' ',
 			' ', '1', '1', ' ',
 			' ', ' ', ' ', ' '
 		,
-		' ', ' ',' ',' ',
+			' ', ' ',' ',' ',
 			' ', '1', '1', ' ',
 			'1', '1', ' ', ' ',
 			' ', ' ', ' ', ' '
 		,
-		' ', ' ',' ',' ',
+			' ', ' ',' ',' ',
 			' ', '1', '1', ' ',
 			' ', '1', '1', ' ',
 			' ', ' ', ' ', ' '
 		,
-		' ', ' ',' ',' ',
+			' ', ' ',' ',' ',
 			'1', '1', '1', '1',
 			' ', ' ', ' ', ' ',
 			' ', ' ', ' ', ' '
 		,
-		' ', '1',' ',' ',
+			' ', '1',' ',' ',
 			' ', '1', '1', ' ',
 			' ', '1', ' ', ' ',
 			' ', ' ', ' ', ' '
 	};
-	//srand(rand() % 100);
-	num = rand() % 7;	
+	srand(time(0));
+	num = rand() % 7;
+	//num = 5;
 	
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++) {
-			figure[i][j] = figures[(num * 16) + i*4 + j];
+	for (int row = 0; row < 4; row++) {
+		for (int col = 0; col < 4; col++) {
+			figure[row][col] = figures[(num * 16) + row*4 + col];
 		}
 	}
 }
 
 void Figure::ShowFigure(TestApp * window)
 {
-	for (int l = 0; l < 4; l++) {
+	for (int row = 0; row < 4; row++) {
 		for (int col = 0; col < 4; col++) {					
-			if (figure[col][l] == '1') {
-				window->SetChar(x + col, y + l, (wchar_t)figure[col][l]);
-			}			
+			if (figure[row][col] == '1') {
+				window->SetChar(x + col, y + row, (wchar_t)figure[row][col]);
+			}
+			/*else {
+				window->SetChar(x + col, y + row, L'.');
+			}*/
 		}
 	}
 }
@@ -86,7 +89,7 @@ void Figure::Rotation()
 		}		
 		swap(figure, copy_a);
 
-		for (int i = 0; i < 4; i++)	{
+		/*for (int i = 0; i < 4; i++)	{
 			wstringstream wss;
 			char    buf[4096], *p = buf;
 			if (i == 0) {
@@ -99,39 +102,92 @@ void Figure::Rotation()
 				sprintf(buf, "%c %c %c %c\n", figure[i][0], figure[i][1], figure[i][2], figure[i][3]);
 			}			
 			OutputDebugStringA(buf);
-		}
+		}*/
 }
 
 void Figure::MoveLeft()
 {
-	if (GetExtrLeft() + x -1 != glass->GetDataXY() =='1'
-	x--;
+	int *col_left = GetExtrLeft();
+	if (x + col_left[1] > 1) {
+		x--;
+	}
 }
 
-void Figure::MoveDown()
+bool Figure::MoveDown()
 {
 	y++;
+	bool block;
+	block = glass->Check4x4(this);
+	if (block) {
+		y--;
+	}
+	char    buf[4096], *p = buf;
+	sprintf(buf, "%d\n", block);
+	OutputDebugStringA(buf);
+	return block;
 }
 
 void Figure::MoveRight()
 {
-	x++;
+	int *col_right = GetExtrRight();
+	if (x+3 - col_right[1] < 15) {
+		x++;
+	}
 }
 
 int* Figure::GetExtrLeft()
 {
 	int arr[2];
-	int (*arr)[2] = &arr;
-	for (int col = 0; col < 4; col++)
-		for (int l = 0; l < 4; l++) {
-		 {
-			if (figure[col][l] == '1') {				
-				arr[0] = col;
-				arr[1] = l;
-				break;
+	bool find = false;
+	int col = 0;
+	while (!find && col<5) {
+		for (int row = 0; row < 4; row++) {
+			if (figure[row][col] == '1') {
+				arr[0] = row;
+				arr[1] = col;
+				find = true;
 				break;
 			}
 		}
+		col++;
+	}
+	return arr;
+}
+
+int * Figure::GetExtrRight()
+{
+	int arr[2];
+	bool find = false;
+	int col = 3;
+	while (!find && col >= 0) {
+		for (int row = 0; row <4 ; row++) {
+			if (figure[row][col] == '1') {
+				arr[0] = row;
+				arr[1] = 3 - col;
+				find = true;
+				break;
+			}
+		}
+		col--;
+	}
+	return arr;
+}
+
+int * Figure::GetExtrDown()
+{
+	int arr[2];
+	bool find = false;
+	int col = 3;
+	while (!find && col >= 0) {
+		for (int row = 0; row < 4; row++) {
+			if (figure[row][col] == '1') {
+				arr[0] = row;
+				arr[1] = 3 - col;
+				find = true;
+				break;
+			}
+		}
+		col--;
 	}
 	return arr;
 }

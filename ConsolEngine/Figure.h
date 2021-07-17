@@ -9,16 +9,19 @@ private:
 	Glass *glass;
 
 public:	
-	
+	int short_left;
 	int x, y, oldX, oldY;
 	int figure[4][4];
 	Figure();
-	void NewFigure();
+	void RandFigure();
 	void ShowFigure(TestApp *window);
 	void Rotation();
 	void MoveLeft();
-	void MoveDown();
+	bool MoveDown();
 	void MoveRight();
 	int* GetExtrLeft();
+	int* GetExtrRight();
+	int* GetExtrDown();
+	//byte GetLeftMatrix
 	~Figure();
 };
