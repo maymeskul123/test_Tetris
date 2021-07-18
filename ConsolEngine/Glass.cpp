@@ -10,11 +10,11 @@ Glass::Glass()
 	width_data = 15;
 	for (int row = 0; row < height_data; row++) {
 		for (int col = 0; col < width_data; col++) {
-			dataGlass[row][col] = '.';
+			dataGlass[row][col] = '+';
 		}
 	}
-	for (int i = 0; i < 4; i++) {
-		dataGlass[19][5 + i] = '1';
+	for (int i = 1; i < 5; i++) {
+		dataGlass[15 + i][0] = '1';
 	}
 }
 
@@ -55,6 +55,7 @@ void Glass::AddFigure(Figure *fig)
 
 bool Glass::CheckBlock(Figure * fig)
 {
+	fig->check = true;
 	bool blocked = false;
 	for (int row = 0; row < fig->height; row++) {
 		for (int col = 0; col < fig->width; col++) {
@@ -63,6 +64,7 @@ bool Glass::CheckBlock(Figure * fig)
 			}
 		}
 	}
+	fig->check = false;
 	return blocked;
 }
 

@@ -43,13 +43,13 @@ void TestApp::UpdateF(float deltaTime)
 	sprintf(buf, "x= %d  y= %d \n", myFigure->x, myFigure->y);
 	OutputDebugStringA(buf);*/
 	
-	if (curTime > endTime) {
+	if (curTime > endTime && !myFigure->check) {
 		curTime = 0.0;		
 		if (myFigure->MoveDown()) {
 			myGlass->AddFigure(myFigure);
 			myFigure->~Figure();
 			myFigure = new Figure();
-		}		
+		}
 		char    buf[4096], *p = buf;
 		sprintf(buf, "x %d   y %d \n", myFigure->x, myFigure->y);
 		OutputDebugStringA(buf);

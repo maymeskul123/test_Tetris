@@ -11,8 +11,9 @@ using namespace std;
 
 Figure::Figure()
 {
-	x = 8;
+	x = 0;
 	y = 0;
+	check = false;
 	glass = new Glass();	
 	RandFigure();
 }
@@ -49,8 +50,7 @@ vector<int> Figure::GetElements(int numFigure)
 void Figure::RandFigure()
 {	
 	srand(time(0));
-	num = rand() % 7;
-	num = 6;
+	num = rand() % 7;	
 
 	char    buf[4096], *p = buf;
 	sprintf(buf, "num= %d \n", num);
@@ -77,11 +77,7 @@ void Figure::RandFigure()
 	int index = 0;
 	for (int n : b) {
 		figure[index] = n;
-		index++;
-		
-		/*char    buf[4096], *p = buf;
-		sprintf(buf, "element from vector= %d \n", n);
-		OutputDebugStringA(buf);*/
+		index++;		
 	}	
 }
 
@@ -95,11 +91,11 @@ void Figure::ShowFigure(TestApp * window)
 	for (int row = 0; row < height; row++) {
 		for (int col = 0; col < width; col++) {
 			if (figure[row * width + col] == '1') {
-				window->SetChar(x + col, y + row, figure[row * width + col]);
+				window->SetChar(x + col+1, y + row+1, figure[row * width + col]);
 			}
-			else {
-				window->SetChar(x + col + 1, y + row + 1, 'o');
-			}
+			/*else {
+				window->SetChar(x + col , y + row, '0');
+			}*/
 		}
 	}
 }
@@ -136,7 +132,7 @@ void Figure::MoveLeft()
 {			
 	if (x > 0) {
 		x--;
-	}	
+	}
 }
 
 void Figure::MoveUp()

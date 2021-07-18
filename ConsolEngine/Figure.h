@@ -16,6 +16,7 @@ private:
 	
 
 public:	
+	bool check;
 	int short_left;
 	int x, y;
 	int height, width;
