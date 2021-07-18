@@ -1,123 +1,154 @@
 #include "Figure.h"
+#include "TestApp.h"
+#include<vector>
 #include <cstdlib>
 #include <time.h>
-//#include <iostream>
+#include <list>
 #include <sstream>
-#include "TestApp.h"
 #include <algorithm>
 
-
+using namespace std;
 
 Figure::Figure()
 {
 	x = 8;
 	y = 0;
-	glass = new Glass();
+	glass = new Glass();	
 	RandFigure();
 }
 
-void Figure::RandFigure() 
-{
-	int figures[128] = { 
-			' ', ' ',' ',' ',
-			' ', '1', ' ', ' ',
-			' ', '1', '1', '1',
-			' ', ' ', ' ', ' '
+vector<int> Figure::GetElements(int numFigure)
+{	
+	vector<vector<int>> figures = {
+	
+		{'1', ' ', ' ',
+		'1', '1', '1'}
 		,
-			' ', ' ',' ',' ',
-			' ', '1', '1', '1',
-			' ', '1', ' ', ' ',
-			' ', ' ', ' ', ' '		
+		{ '1', '1', '1',
+		'1', ' ', ' ' }
 		,
-			' ', ' ',' ',' ',
-			'1', '1', ' ', ' ',
-			' ', '1', '1', ' ',
-			' ', ' ', ' ', ' '
-		,
-			' ', ' ',' ',' ',
-			' ', '1', '1', ' ',
-			'1', '1', ' ', ' ',
-			' ', ' ', ' ', ' '
-		,
-			' ', ' ',' ',' ',
-			' ', '1', '1', ' ',
-			' ', '1', '1', ' ',
-			' ', ' ', ' ', ' '
-		,
-			' ', ' ',' ',' ',
-			'1', '1', '1', '1',
-			' ', ' ', ' ', ' ',
-			' ', ' ', ' ', ' '
-		,
-			' ', '1',' ',' ',
-			' ', '1', '1', ' ',
-			' ', '1', ' ', ' ',
-			' ', ' ', ' ', ' '
+		{'1', '1', ' ',
+		' ', '1', '1'
+		},
+		{' ', '1', '1',
+		'1', '1', ' '
+		},
+		{' ', '1',' ',
+		'1', '1', '1'
+		},
+		{'1', '1',
+		'1', '1'
+		},
+		{'1', '1', '1', '1'}
 	};
+	
+	//return vector<char>();
+	return figures[numFigure];
+}
+
+void Figure::RandFigure()
+{	
 	srand(time(0));
 	num = rand() % 7;
-	//num = 5;
+	num = 6;
+
+	char    buf[4096], *p = buf;
+	sprintf(buf, "num= %d \n", num);
+	OutputDebugStringA(buf);
 	
-	for (int row = 0; row < 4; row++) {
-		for (int col = 0; col < 4; col++) {
-			figure[row][col] = figures[(num * 16) + row*4 + col];
-		}
+	if (num != 6 && num != 5) {
+		height = 2;
+		width = 3;
+		figure = new int[6];
 	}
+	else if (num == 5){
+		height = 2;
+		width = 2;
+		figure = new int[4];
+	}
+	else if (num == 6) {
+		height = 1;
+		width = 4;
+		figure = new int[4];
+	}
+	
+	vector<int> b(GetElements(num));
+
+	int index = 0;
+	for (int n : b) {
+		figure[index] = n;
+		index++;
+		
+		/*char    buf[4096], *p = buf;
+		sprintf(buf, "element from vector= %d \n", n);
+		OutputDebugStringA(buf);*/
+	}	
 }
 
 void Figure::ShowFigure(TestApp * window)
 {
-	for (int row = 0; row < 4; row++) {
-		for (int col = 0; col < 4; col++) {					
-			if (figure[row][col] == '1') {
-				window->SetChar(x + col + 1, y + row + 1, (wchar_t)figure[row][col]);
+	/*for (int i = 0; i < height * width; i++) {
+		char    buf[4096], *p = buf;
+		sprintf(buf, "\n element %d from figure= %d \n", i, figure[i]);
+		OutputDebugStringA(buf);
+	}*/
+	for (int row = 0; row < height; row++) {
+		for (int col = 0; col < width; col++) {
+			if (figure[row * width + col] == '1') {
+				window->SetChar(x + col, y + row, figure[row * width + col]);
 			}
-			/*else {
-				window->SetChar(x + col, y + row, L'.');
-			}*/
+			else {
+				window->SetChar(x + col + 1, y + row + 1, 'o');
+			}
 		}
 	}
 }
 
 void Figure::Rotation()
-{
-		int copy_a[4][4];
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
-				copy_a[3 - j][i] = figure[i][j];
-			}
-		}		
-		swap(figure, copy_a);
-
-		/*for (int i = 0; i < 4; i++)	{
-			wstringstream wss;
+{	
+	int* dst = new int [height * width];
+	
+	int i, j;
+	for (i = 0; i < width; i++)
+		for (j = 0; j < height; j++)
+			dst[i * height + j] = figure[j *width + width - i - 1];
+	
+	/*for (j = 0; j < height; j++) {
+		for (i = 0; i < width; i++) {
 			char    buf[4096], *p = buf;
-			if (i == 0) {
-				sprintf(buf, "After\n%c %c %c %c\n", figure[i][0], figure[i][1], figure[i][2], figure[i][3]);
-			}			
-			else if (i == 3) {
-				sprintf(buf, "%c %c %c %c\n\n", figure[i][0], figure[i][1], figure[i][2], figure[i][3]);
-			}			
-			else {
-				sprintf(buf, "%c %c %c %c\n", figure[i][0], figure[i][1], figure[i][2], figure[i][3]);
-			}			
+			sprintf(buf, "old %i %i %i \t", j, i, figure[j*width + i]);
 			OutputDebugStringA(buf);
-		}*/
+		}		
+	}
+	
+	for (j = 0; j < width; j++) {
+		for (i = 0; i < height; i++) {
+			char    buf[4096], *p = buf;
+			sprintf(buf, "new %i %i %i \t", j, i, dst[j * height + i]);
+			OutputDebugStringA(buf);
+		}		
+	}*/
+	swap(figure, dst);
+	swap(height, width);	
 }
 
 void Figure::MoveLeft()
-{
-	int *col_left = GetExtrLeft();
-	if (x + col_left[1] > 1) {
+{			
+	if (x > 0) {
 		x--;
-	}
+	}	
+}
+
+void Figure::MoveUp()
+{
+	y--;
 }
 
 bool Figure::MoveDown()
 {
 	y++;
 	bool block;
-	block = glass->Check4x4(this);
+	block = glass->CheckBlock(this);
 	if (block) {
 		y--;
 	}
@@ -128,68 +159,10 @@ bool Figure::MoveDown()
 }
 
 void Figure::MoveRight()
-{
-	int *col_right = GetExtrRight();
-	if (x+3 - col_right[1] < 15) {
+{	
+	if (x + width < 15) {
 		x++;
 	}
-}
-
-int* Figure::GetExtrLeft()
-{
-	int arr[2];
-	bool find = false;
-	int col = 0;
-	while (!find && col<5) {
-		for (int row = 0; row < 4; row++) {
-			if (figure[row][col] == '1') {
-				arr[0] = row;
-				arr[1] = col;
-				find = true;
-				break;
-			}
-		}
-		col++;
-	}
-	return arr;
-}
-
-int * Figure::GetExtrRight()
-{
-	int arr[2];
-	bool find = false;
-	int col = 3;
-	while (!find && col >= 0) {
-		for (int row = 0; row <4 ; row++) {
-			if (figure[row][col] == '1') {
-				arr[0] = row;
-				arr[1] = 3 - col;
-				find = true;
-				break;
-			}
-		}
-		col--;
-	}
-	return arr;
-}
-
-int * Figure::GetExtrDown()
-{
-	int arr[2];
-	bool find = false;
-	int col = 3;
-	while (!find && col >= 0) {
-		for (int row = 0; row < 4; row++) {
-			if (figure[row][col] == '1') {
-				arr[0] = row;
-				arr[1] = 3 - col;
-				find = true;
-				break;
-			}
-		}
-		col--;
-	}
-	return arr;
 }
 
 Figure::~Figure()

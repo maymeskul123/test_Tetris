@@ -10,7 +10,7 @@ Glass::Glass()
 	width_data = 15;
 	for (int row = 0; row < height_data; row++) {
 		for (int col = 0; col < width_data; col++) {
-			dataGlass[row][col] = ' ';
+			dataGlass[row][col] = '.';
 		}
 	}
 	for (int i = 0; i < 4; i++) {
@@ -44,21 +44,21 @@ int * Glass::GetDataXY(int x, int y)
 
 void Glass::AddFigure(Figure *fig)
 {
-	for (int l = 0; l < 4; l++) {
-		for (int col = 0; col < 4; col++) {
-			if (fig->figure[l][col] == '1') {
-				dataGlass[fig->y + l][fig->x + col] = '1';
-			}		
+	for (int row = 0; row < fig->height; row++) {
+		for (int col = 0; col < fig->width; col++) {
+			if (fig->figure[row * fig->width + col] == '1') {
+				dataGlass[fig->y + row][fig->x + col] = '1';
+			}
 		}
 	}
 }
 
-bool Glass::Check4x4(Figure * fig)
+bool Glass::CheckBlock(Figure * fig)
 {
-	bool blocked = false;	
-	for (int row = 0; row < 4; row++) {
-		for (int col = 0; col < 4; col++) {
-			if (((fig->figure[row][col] == '1') && (dataGlass[fig->y + row][fig->x + col] == 1)) || ((fig->figure[row][col] == '1') && (fig->y + row >19))) {
+	bool blocked = false;
+	for (int row = 0; row < fig->height; row++) {
+		for (int col = 0; col < fig->width; col++) {
+			if (((fig->figure[row * fig->width + col] == '1') && (dataGlass[fig->y + row][fig->x + col] == '1')) || ((fig->figure[row * fig->width + col] == '1') && (fig->y + row >19))) {
 				blocked = true;
 			}
 		}

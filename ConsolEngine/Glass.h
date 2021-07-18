@@ -15,8 +15,8 @@ class Glass
 	public:		
 		Glass();
 		~Glass();
-		void DrawGlass(TestApp * window);
+		void DrawGlass(TestApp*);
 		int* GetDataXY(int col, int line);
-		void AddFigure(Figure *fig);
-		bool Check4x4(Figure* figura);
+		void AddFigure(Figure*);
+		bool CheckBlock(Figure*);
 };
