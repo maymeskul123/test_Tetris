@@ -12,12 +12,10 @@ class Figure
 {
 private:
 	int num;
-	Glass *glass;
-	
 
 public:	
 	bool check;
-	int short_left;
+	Glass *glass;
 	int x, y;
 	int height, width;
 	int* figure;

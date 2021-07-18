@@ -28,6 +28,7 @@ class TestApp : public BaseApp
 		Figure *myFigure;
 		Glass * myGlass;
 		TestApp();
+		void BottomEnd();
 		virtual void KeyPressed(int btnCode);
 		virtual void UpdateF(float deltaTime);
 };

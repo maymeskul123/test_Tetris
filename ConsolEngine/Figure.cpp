@@ -13,8 +13,7 @@ Figure::Figure()
 {
 	x = 0;
 	y = 0;
-	check = false;
-	glass = new Glass();	
+	check = false;	
 	RandFigure();
 }
 
@@ -50,7 +49,8 @@ vector<int> Figure::GetElements(int numFigure)
 void Figure::RandFigure()
 {	
 	srand(time(0));
-	num = rand() % 7;	
+	num = rand() % 7;
+	//num = 3;
 
 	char    buf[4096], *p = buf;
 	sprintf(buf, "num= %d \n", num);
@@ -146,7 +146,7 @@ bool Figure::MoveDown()
 	bool block;
 	block = glass->CheckBlock(this);
 	if (block) {
-		y--;
+		y--;		
 	}
 	char    buf[4096], *p = buf;
 	sprintf(buf, "%d\n", block);

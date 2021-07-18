@@ -13,6 +13,7 @@ class Glass
 		int dataGlass[20][15];
 
 	public:		
+		bool add_fig;
 		Glass();
 		~Glass();
 		void DrawGlass(TestApp*);
