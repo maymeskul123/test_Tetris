@@ -47,7 +47,7 @@ void Glass::AddFigure(Figure *fig)
 	for (int l = 0; l < 4; l++) {
 		for (int col = 0; col < 4; col++) {
 			if (fig->figure[l][col] == '1') {
-				dataGlass[fig->y + l - 1][fig->x + col - 1] = '1';
+				dataGlass[fig->y + l][fig->x + col] = '1';
 			}		
 		}
 	}

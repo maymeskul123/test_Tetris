@@ -70,7 +70,7 @@ void Figure::ShowFigure(TestApp * window)
 	for (int row = 0; row < 4; row++) {
 		for (int col = 0; col < 4; col++) {					
 			if (figure[row][col] == '1') {
-				window->SetChar(x + col, y + row, (wchar_t)figure[row][col]);
+				window->SetChar(x + col + 1, y + row + 1, (wchar_t)figure[row][col]);
 			}
 			/*else {
 				window->SetChar(x + col, y + row, L'.');
