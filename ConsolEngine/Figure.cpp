@@ -41,9 +41,8 @@ vector<int> Figure::GetElements(int numFigure)
 		'1', '1'
 		},
 		{'1', '1', '1', '1'}
-	};
+	};	
 	
-	//return vector<char>();
 	return figures[numFigure];
 }
 
@@ -80,6 +79,10 @@ void Figure::RandFigure()
 		figure[index] = n;
 		index++;		
 	}
+
+	srand(time(0));
+	direction = rand() % 2;
+	if (direction) Rotation(false);
 }
 
 void Figure::ShowFigure(TestApp * window)
@@ -96,7 +99,7 @@ void Figure::ShowFigure(TestApp * window)
 	}
 }
 
-void Figure::Rotation()
+void Figure::Rotation(bool check)
 {	
 	int* dst = new int [height * width];
 	
@@ -108,21 +111,24 @@ void Figure::Rotation()
 	
 	swap(figure, dst);
 	swap(height, width);
-	bool imposs = false;
-	for (int row = 0; row < height; row++) {
-		for (int col = 0; col < width; col++) {
-			imposs = ((figure[row * width + col] == '1') && (glass->dataGlass[y + row][x + col] == '1')) || ((x + width > 15) || (x < 0) || (y > 20));
+	direction = direction ^ true;
+	if (check) {
+		bool imposs = false;
+		for (int row = 0; row < height; row++) {
+			for (int col = 0; col < width; col++) {
+				imposs = ((figure[row * width + col] == '1') && (glass->dataGlass[y + row][x + col] == '1')) || ((x + width > 15) || (x < 0) || (y > 20));
+			}
 		}
-	}
-	if (imposs) {
-		swap(figure, dst);
-		swap(height, width);
+		if (imposs) {
+			swap(figure, dst);
+			swap(height, width);
+			direction = direction ^ true;
+		}
 	}
 
 	/*char    buf[4096], *p = buf;
 	sprintf(buf, " block %d\n", imposs);
 	OutputDebugStringA(buf);*/
-
 }
 
 void Figure::MoveLeft()

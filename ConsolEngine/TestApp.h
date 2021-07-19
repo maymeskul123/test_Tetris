@@ -11,13 +11,7 @@ class TestApp : public BaseApp
 	typedef BaseApp Parent;
 
 	private:
-		int mObj1XOld;
-		int mObj1YOld;
-		int mObj1X;
-		int mObj1Y;
-
-		int mObj2X;
-		int mObj2Y;
+		int score;
 		float curTime, endTime;
 
 		bool mDirection;
@@ -31,4 +25,5 @@ class TestApp : public BaseApp
 		void BottomEnd();
 		virtual void KeyPressed(int btnCode);
 		virtual void UpdateF(float deltaTime);
+		void ShowScore();
 };

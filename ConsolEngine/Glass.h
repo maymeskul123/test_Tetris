@@ -9,8 +9,7 @@ class Glass
 		int width_border;
 		int height_border;
 		int height_data;
-		int width_data;		
-		
+		int width_data;
 
 	public:		
 		int dataGlass[20][15];
@@ -18,7 +17,6 @@ class Glass
 		Glass();
 		~Glass();		
 		void DrawGlass(TestApp*);		
-		void AddFigure(Figure*);
-		//bool CheckBlock(Figure*);
-		bool CheckBottom();
+		void AddFigure(Figure*);		
+		int CheckBottom();
 };

@@ -12,6 +12,7 @@ class Figure
 {
 private:
 	int num;
+	bool direction;
 
 public:	
 	bool check;
@@ -22,7 +23,7 @@ public:
 	vector<int> GetElements(int);
 	void RandFigure();
 	void ShowFigure(TestApp*);
-	void Rotation();
+	void Rotation(bool);
 	void MoveLeft();
 	void MoveUp();
 	bool MoveDown();

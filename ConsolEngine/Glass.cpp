@@ -60,32 +60,10 @@ void Glass::AddFigure(Figure *fig)
 	//add_fig = false;
 }
 
-//bool Glass::CheckBlock(Figure * fig)
-//{	
-//	bool blocked = false;
-//	bool equal_fig_1 = false;
-//	bool equal_data_1 = false;
-//	for (int row = 0; row < fig->height; row++) {
-//		for (int col = 0; col < fig->width; col++) {
-//				/*char    buf[4096], *p = buf;
-//				sprintf(buf, "dataGlass= %d  fig_y= %d fig_x= %d \n", dataGlass[fig->y + row][fig->x + col], fig->y + row, fig->x+col);
-//				OutputDebugStringA(buf);*/
-//
-//			equal_fig_1 = (fig->figure[row * fig->width + col] == '1');
-//			equal_data_1 = (dataGlass[fig->y_temp + row][fig->x_temp + col] == '1');
-//
-//			//if ((equal_fig_1) && (fig->y_temp + row > 19) || (equal_fig_1)&&(fig->x_temp + col > 14))blocked = true;
-//			//if ((equal_fig_1) && (fig->y_temp < 0) || (equal_fig_1) && (fig->x_temp < 0))blocked = true;
-//			if (equal_fig_1 && equal_data_1) blocked = true;
-//		}
-//	}
-//	return blocked;
-//}
-
-bool Glass::CheckBottom()
+int Glass::CheckBottom()
 {	
-	//vector<int> lines;
-	int Buff[20][15];
+	int score = 0;
+	int buff[20][15];
 	int* src;
 	int* dst;
 	int lines_del = 0;
@@ -93,37 +71,41 @@ bool Glass::CheckBottom()
 	
 		for (int row = height_data - 1; row >= 0; row--)
 		{
-			bool line_compl = true;
+			bool save_line = true;
+			int fill_str[15];
+			std::memset(fill_str, '1', 15 * sizeof(int));
+			save_line = (dataGlass[row] == &fill_str[15]);
 			for (int n : dataGlass[row]) {
-				line_compl = (line_compl && (n == '1'));
-				if (!line_compl)break;
+				save_line = (save_line && (n == '1'));
+				if (!save_line)break;
 			}
 		
-			if (!line_compl) {
-				dst = &Buff[index][0];
+			if (save_line) {
+				dst = &buff[index][0];
 				src = &dataGlass[row][0];
 				std::memmove(dst, src, 15 * sizeof(int));
 				index--;
+				score = score + 100;
 			}
 		}
 		
-		char    buf[4096], *p = buf;
+		/*char    buf[4096], *p = buf;
 		sprintf(buf, "index = %d  \n", index);
-		OutputDebugStringA(buf);
+		OutputDebugStringA(buf);*/
 		
 		int a[15];
 		std::memset(a, ' ', sizeof(a));
 		
 		while (index >= 0) {
 			//std::memset(Buff[index], ' ', 15 * sizeof(int));
-			dst = &Buff[index][0];
+			dst = &buff[index][0];
 			src = &a[0];
 			std::memmove(dst, src, 15 * sizeof(int));
 			index--;
 		}
-		swap(Buff, dataGlass);
+		swap(buff, dataGlass);
 	
-	return false;
+	return score;
 }
 
 Glass::~Glass()

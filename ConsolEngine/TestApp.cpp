@@ -4,28 +4,40 @@
 #include "Figure.h"
 
 TestApp::TestApp() : Parent(100, 80)
-{
-	mDirection = true;
+{	
+	score = 0;
 	endTime = 2.0;
 	curTime = 0.0;
 	
 	myFigure = new Figure();	
 	myGlass = new Glass();
 	myFigure->glass = myGlass;
+	
+	char    buf[22], *p = buf;
+	sprintf(buf, "Score=%.14d ", score);
+	
+	//OutputDebugStringA(buf);
+	//char a[15];
+	//std::memset(a, '+', sizeof(a));
+	for (int col = 0; col < 22; col++) SetChar(col, 23, buf[col]);
+	
+	/*for (int row = 25; row < 35; row ++)
+		for (int col = 9; col < 20; col++) {
+			SetChar(col, row, L'!');
+		}*/
 }
 
 void TestApp::BottomEnd()
 {
 	myGlass->AddFigure(myFigure);
 	myFigure->~Figure();
-	myGlass->CheckBottom();
+	score = score + myGlass->CheckBottom();
 	myFigure = new Figure();
 	myFigure->glass = myGlass;
 }
 
 void TestApp::KeyPressed(int btnCode)
-{
-	
+{	
 	if (btnCode == 119) //w		
 		myFigure->MoveUp();
 	else if (btnCode == 97) //a
@@ -33,7 +45,7 @@ void TestApp::KeyPressed(int btnCode)
 	else if (btnCode == 100) //d
 		myFigure->MoveRight();
 	else if (btnCode == 32) // |____|
-		myFigure->Rotation();
+		myFigure->Rotation(true);
 	else if (btnCode == 115) //s		
 		if (myFigure->MoveDown()) {
 			BottomEnd();
@@ -50,6 +62,7 @@ void TestApp::UpdateF(float deltaTime)
 	
 	if (curTime > endTime) {
 		curTime = 0.0;		
+		ShowScore();
 		if (myFigure->MoveDown()) {
 			BottomEnd();
 		}
@@ -63,4 +76,11 @@ void TestApp::UpdateF(float deltaTime)
 	if (!myFigure->check) {
 		myFigure->ShowFigure(this);
 	}
+}
+
+void TestApp::ShowScore()
+{
+	char    buf[22], *p = buf;
+	sprintf(buf, "Score=%.14d ", score);
+	for (int col = 0; col < 22; col++) SetChar(col, 23, buf[col]);
 }
