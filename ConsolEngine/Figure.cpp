@@ -11,8 +11,10 @@ using namespace std;
 
 Figure::Figure()
 {
-	x = 0;
+	x = 7;
+	x_temp = x;
 	y = 0;
+	y_temp = y;
 	check = false;	
 	RandFigure();
 }
@@ -50,7 +52,7 @@ void Figure::RandFigure()
 {	
 	srand(time(0));
 	num = rand() % 7;
-	//num = 3;
+	num = 6;
 
 	char    buf[4096], *p = buf;
 	sprintf(buf, "num= %d \n", num);
@@ -78,7 +80,7 @@ void Figure::RandFigure()
 	for (int n : b) {
 		figure[index] = n;
 		index++;		
-	}	
+	}
 }
 
 void Figure::ShowFigure(TestApp * window)
@@ -125,41 +127,65 @@ void Figure::Rotation()
 		}		
 	}*/
 	swap(figure, dst);
-	swap(height, width);	
+	swap(height, width);
 }
 
 void Figure::MoveLeft()
 {			
 	if (x > 0) {
-		x--;
+		//x--;	
+		x_temp = x;
+		y_temp = y;
+		x_temp--;
+
+		if (!glass->CheckBlock(this)) {
+			x=x_temp;
+		}
+		check = false;
+	}
+}
+
+void Figure::MoveRight()
+{
+	if (x + width < 15) {
+		//x++;
+	
+	x_temp = x;
+	y_temp = y;
+	x_temp++;
+
+	if (!glass->CheckBlock(this)) {
+		x = x_temp;
+	}
+	check = false;
 	}
 }
 
 void Figure::MoveUp()
 {
 	y--;
+	check = false;
 }
 
 bool Figure::MoveDown()
 {
-	y++;
+	y_temp = y;
+	y_temp++;
+	//y++;
+	
 	bool block;
 	block = glass->CheckBlock(this);
-	if (block) {
-		y--;		
-	}
-	char    buf[4096], *p = buf;
+	if (!block) y = y_temp;
+	
+	/*char    buf[4096], *p = buf;
 	sprintf(buf, "%d\n", block);
 	OutputDebugStringA(buf);
+	*/
+	check = false;
 	return block;
 }
 
-void Figure::MoveRight()
-{	
-	if (x + width < 15) {
-		x++;
-	}
-}
+
 
 Figure::~Figure()
 {

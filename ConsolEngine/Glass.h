@@ -1,6 +1,7 @@
 #pragma once
 class TestApp;
 class Figure;
+#include <vector>
 
 class Glass
 {
@@ -15,9 +16,9 @@ class Glass
 	public:		
 		bool add_fig;
 		Glass();
-		~Glass();
-		void DrawGlass(TestApp*);
-		int* GetDataXY(int col, int line);
+		~Glass();		
+		void DrawGlass(TestApp*);		
 		void AddFigure(Figure*);
 		bool CheckBlock(Figure*);
+		bool CheckBottom();
 };
