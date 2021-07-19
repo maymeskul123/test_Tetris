@@ -15,12 +15,12 @@ Glass::Glass()
 			dataGlass[row][col] = ' ';
 		}
 	}
-	for (int i = 0; i < 14; i++) {
-		dataGlass[10][0] = '1';
-		/*if (i % 2) dataGlass[15][i] = '1';
-		if (i % 2) dataGlass[18][i] = '1';*/		
-		//dataGlass[15 + i][5] = '1';
-	}
+	//for (int i = 0; i < 14; i++) {
+	//	dataGlass[10][0] = '1';
+	//	/*if (i % 2) dataGlass[15][i] = '1';
+	//	if (i % 2) dataGlass[18][i] = '1';*/		
+	//	//dataGlass[15 + i][5] = '1';
+	//}
 }
 
 void Glass::DrawGlass(TestApp * window)

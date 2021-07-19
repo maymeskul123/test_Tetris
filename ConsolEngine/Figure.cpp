@@ -12,7 +12,7 @@ using namespace std;
 
 Figure::Figure()
 {
-	x = 1;	
+	x = 8;	
 	y = 0;	
 	check = false;	
 	RandFigure();
@@ -83,12 +83,7 @@ void Figure::RandFigure()
 }
 
 void Figure::ShowFigure(TestApp * window)
-{
-	/*for (int i = 0; i < height * width; i++) {
-		char    buf[4096], *p = buf;
-		sprintf(buf, "\n element %d from figure= %d \n", i, figure[i]);
-		OutputDebugStringA(buf);
-	}*/
+{	
 	for (int row = 0; row < height; row++) {
 		for (int col = 0; col < width; col++) {
 			if (figure[row * width + col] == '1') {
@@ -110,23 +105,24 @@ void Figure::Rotation()
 		for (j = 0; j < height; j++)
 			dst[i * height + j] = figure[j *width + width - i - 1];
 	
-	/*for (j = 0; j < height; j++) {
-		for (i = 0; i < width; i++) {
-			char    buf[4096], *p = buf;
-			sprintf(buf, "old %i %i %i \t", j, i, figure[j*width + i]);
-			OutputDebugStringA(buf);
-		}		
-	}
 	
-	for (j = 0; j < width; j++) {
-		for (i = 0; i < height; i++) {
-			char    buf[4096], *p = buf;
-			sprintf(buf, "new %i %i %i \t", j, i, dst[j * height + i]);
-			OutputDebugStringA(buf);
-		}		
-	}*/
 	swap(figure, dst);
 	swap(height, width);
+	bool imposs = false;
+	for (int row = 0; row < height; row++) {
+		for (int col = 0; col < width; col++) {
+			imposs = ((figure[row * width + col] == '1') && (glass->dataGlass[y + row][x + col] == '1')) || ((x + width > 15) || (x < 0) || (y > 20));
+		}
+	}
+	if (imposs) {
+		swap(figure, dst);
+		swap(height, width);
+	}
+
+	/*char    buf[4096], *p = buf;
+	sprintf(buf, " block %d\n", imposs);
+	OutputDebugStringA(buf);*/
+
 }
 
 void Figure::MoveLeft()
@@ -154,13 +150,8 @@ void Figure::MoveRight()
 			char    buf[4096], *p = buf;
 			sprintf(buf, " block %d\n", block);
 			OutputDebugStringA(buf);
-	}
-	if (!block)x++;
-
-	/*if (!glass->CheckBlock(this)) {
-		x = x_temp;
-	}
-	check = false;*/
+		}
+		if (!block)x++;	
 	}
 }
 
