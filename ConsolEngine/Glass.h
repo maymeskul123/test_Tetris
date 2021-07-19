@@ -19,6 +19,6 @@ class Glass
 		~Glass();		
 		void DrawGlass(TestApp*);		
 		void AddFigure(Figure*);
-		bool CheckBlock(Figure*);
+		//bool CheckBlock(Figure*);
 		bool CheckBottom();
 };

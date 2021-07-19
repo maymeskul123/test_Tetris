@@ -60,27 +60,27 @@ void Glass::AddFigure(Figure *fig)
 	//add_fig = false;
 }
 
-bool Glass::CheckBlock(Figure * fig)
-{	
-	bool blocked = false;
-	bool equal_fig_1 = false;
-	bool equal_data_1 = false;
-	//for (int row = 0; row < fig->height; row++) {
-	//	for (int col = 0; col < fig->width; col++) {
-	//			/*char    buf[4096], *p = buf;
-	//			sprintf(buf, "dataGlass= %d  fig_y= %d fig_x= %d \n", dataGlass[fig->y + row][fig->x + col], fig->y + row, fig->x+col);
-	//			OutputDebugStringA(buf);*/
-
-	//		equal_fig_1 = (fig->figure[row * fig->width + col] == '1');
-	//		equal_data_1 = (dataGlass[fig->y_temp + row][fig->x_temp + col] == '1');
-
-	//		//if ((equal_fig_1) && (fig->y_temp + row > 19) || (equal_fig_1)&&(fig->x_temp + col > 14))blocked = true;
-	//		//if ((equal_fig_1) && (fig->y_temp < 0) || (equal_fig_1) && (fig->x_temp < 0))blocked = true;
-	//		if (equal_fig_1 && equal_data_1) blocked = true;
-	//	}
-	//}
-	return blocked;
-}
+//bool Glass::CheckBlock(Figure * fig)
+//{	
+//	bool blocked = false;
+//	bool equal_fig_1 = false;
+//	bool equal_data_1 = false;
+//	for (int row = 0; row < fig->height; row++) {
+//		for (int col = 0; col < fig->width; col++) {
+//				/*char    buf[4096], *p = buf;
+//				sprintf(buf, "dataGlass= %d  fig_y= %d fig_x= %d \n", dataGlass[fig->y + row][fig->x + col], fig->y + row, fig->x+col);
+//				OutputDebugStringA(buf);*/
+//
+//			equal_fig_1 = (fig->figure[row * fig->width + col] == '1');
+//			equal_data_1 = (dataGlass[fig->y_temp + row][fig->x_temp + col] == '1');
+//
+//			//if ((equal_fig_1) && (fig->y_temp + row > 19) || (equal_fig_1)&&(fig->x_temp + col > 14))blocked = true;
+//			//if ((equal_fig_1) && (fig->y_temp < 0) || (equal_fig_1) && (fig->x_temp < 0))blocked = true;
+//			if (equal_fig_1 && equal_data_1) blocked = true;
+//		}
+//	}
+//	return blocked;
+//}
 
 bool Glass::CheckBottom()
 {	

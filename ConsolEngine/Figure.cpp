@@ -51,7 +51,7 @@ void Figure::RandFigure()
 {	
 	srand(time(0));
 	num = rand() % 7;
-	num = 1;
+	//num = 1;
 
 	char    buf[4096], *p = buf;
 	sprintf(buf, "num= %d \n", num);
@@ -172,19 +172,31 @@ void Figure::MoveUp()
 
 bool Figure::MoveDown()
 {
-	y++;
 	bool block = false;
-	//block = glass->CheckBlock(this);
-	//if (!block) y = y_temp;
-	//
-	///*char    buf[4096], *p = buf;
-	//sprintf(buf, "%d\n", block);
-	//OutputDebugStringA(buf);
-	//*/	
+	if ((y + height) < 20) {
+		for (int row = 0; row < height; row++) {
+			for (int col = 0; col < width; col++) {
+				block = block || ((figure[row *width + col] == '1') && (glass->dataGlass[y + row + 1][x + col] == '1'));
+
+				char    buf[4096], *p = buf;
+				sprintf(buf, " block %d\n", block);
+				OutputDebugStringA(buf);
+			}
+		}
+		if (!block)y++;
+	}
+	else block = true;
 	return block;
 }
 
-
+	/*bool block = false;
+	block = glass->CheckBlock(this);
+	if (!block) y = y++;*/
+	
+	/*char    buf[4096], *p = buf;
+	sprintf(buf, "%d\n", block);
+	OutputDebugStringA(buf);
+	*/
 
 Figure::~Figure()
 {
