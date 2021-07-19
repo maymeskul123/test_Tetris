@@ -48,7 +48,7 @@ void TestApp::UpdateF(float deltaTime)
 	sprintf(buf, "x= %d  y= %d \n", myFigure->x, myFigure->y);
 	OutputDebugStringA(buf);*/
 	
-	if (curTime > endTime && !myFigure->check) {
+	if (curTime > endTime) {
 		curTime = 0.0;		
 		if (myFigure->MoveDown()) {
 			BottomEnd();

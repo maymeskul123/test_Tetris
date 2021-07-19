@@ -1,5 +1,6 @@
 #include "Figure.h"
 #include "TestApp.h"
+#include "Glass.h"
 #include<vector>
 #include <cstdlib>
 #include <time.h>
@@ -11,10 +12,8 @@ using namespace std;
 
 Figure::Figure()
 {
-	x = 7;
-	x_temp = x;
-	y = 0;
-	y_temp = y;
+	x = 1;	
+	y = 0;	
 	check = false;	
 	RandFigure();
 }
@@ -52,7 +51,7 @@ void Figure::RandFigure()
 {	
 	srand(time(0));
 	num = rand() % 7;
-	num = 6;
+	num = 1;
 
 	char    buf[4096], *p = buf;
 	sprintf(buf, "num= %d \n", num);
@@ -133,31 +132,35 @@ void Figure::Rotation()
 void Figure::MoveLeft()
 {			
 	if (x > 0) {
-		//x--;	
-		x_temp = x;
-		y_temp = y;
-		x_temp--;
+		bool block = false;
+		for (int row = 0; row < height; row++) {
+			block = block || ((figure[row *width] == '1') && (glass->dataGlass[y + row][x - 1] == '1'));
 
-		if (!glass->CheckBlock(this)) {
-			x=x_temp;
+			char    buf[4096], *p = buf;
+			sprintf(buf, " block %d\n", block);
+			OutputDebugStringA(buf);
 		}
-		check = false;
+		if(!block)x--;
 	}
 }
 
 void Figure::MoveRight()
 {
-	if (x + width < 15) {
-		//x++;
-	
-	x_temp = x;
-	y_temp = y;
-	x_temp++;
+	if (x + width < 15) {	
+		bool block = false;
+		for (int row = 0; row < height; row++) {
+			block = block || ((figure[row *width + width - 1] == '1') && (glass->dataGlass[y + row][x + width] == '1'));
+		
+			char    buf[4096], *p = buf;
+			sprintf(buf, " block %d\n", block);
+			OutputDebugStringA(buf);
+	}
+	if (!block)x++;
 
-	if (!glass->CheckBlock(this)) {
+	/*if (!glass->CheckBlock(this)) {
 		x = x_temp;
 	}
-	check = false;
+	check = false;*/
 	}
 }
 
@@ -169,19 +172,15 @@ void Figure::MoveUp()
 
 bool Figure::MoveDown()
 {
-	y_temp = y;
-	y_temp++;
-	//y++;
-	
-	bool block;
-	block = glass->CheckBlock(this);
-	if (!block) y = y_temp;
-	
-	/*char    buf[4096], *p = buf;
-	sprintf(buf, "%d\n", block);
-	OutputDebugStringA(buf);
-	*/
-	check = false;
+	y++;
+	bool block = false;
+	//block = glass->CheckBlock(this);
+	//if (!block) y = y_temp;
+	//
+	///*char    buf[4096], *p = buf;
+	//sprintf(buf, "%d\n", block);
+	//OutputDebugStringA(buf);
+	//*/	
 	return block;
 }
 

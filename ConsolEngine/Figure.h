@@ -16,8 +16,7 @@ private:
 public:	
 	bool check;
 	Glass *glass;
-	int x, y;
-	int x_temp, y_temp;
+	int x, y;	
 	int height, width;
 	int* figure;
 	vector<int> GetElements(int);

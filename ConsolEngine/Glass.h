@@ -9,11 +9,11 @@ class Glass
 		int width_border;
 		int height_border;
 		int height_data;
-		int width_data;
+		int width_data;		
 		
-		int dataGlass[20][15];
 
 	public:		
+		int dataGlass[20][15];
 		bool add_fig;
 		Glass();
 		~Glass();		
