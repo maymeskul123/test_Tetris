@@ -14,13 +14,7 @@ Glass::Glass()
 		for (int col = 0; col < width_data+1; col++) {
 			dataGlass[row][col] = ' ';
 		}
-	}
-	//for (int i = 0; i < 14; i++) {
-	//	dataGlass[10][0] = '1';
-	//	/*if (i % 2) dataGlass[15][i] = '1';
-	//	if (i % 2) dataGlass[18][i] = '1';*/		
-	//	//dataGlass[15 + i][5] = '1';
-	//}
+	}	
 }
 
 void Glass::DrawGlass(TestApp * window)
@@ -71,22 +65,21 @@ int Glass::CheckBottom()
 	
 		for (int row = height_data - 1; row >= 0; row--)
 		{
-			bool save_line = true;
+			bool save_line = false;
 			int fill_str[15];
 			std::memset(fill_str, '1', 15 * sizeof(int));
 			save_line = (dataGlass[row] == &fill_str[15]);
 			for (int n : dataGlass[row]) {
-				save_line = (save_line && (n == '1'));
-				if (!save_line)break;
+				if (n != '1') save_line = true;
+				if (save_line)break;
 			}
 		
 			if (save_line) {
 				dst = &buff[index][0];
 				src = &dataGlass[row][0];
 				std::memmove(dst, src, 15 * sizeof(int));
-				index--;
-				score = score + 100;
-			}
+				index--;				
+			}else score = score + 100;
 		}
 		
 		/*char    buf[4096], *p = buf;

@@ -13,10 +13,7 @@ class TestApp : public BaseApp
 	private:
 		int score;
 		float curTime, endTime;
-
-		bool mDirection;
-		
-		
+		bool mDirection;		
 
 	public:
 		Figure *myFigure;
@@ -26,4 +23,5 @@ class TestApp : public BaseApp
 		virtual void KeyPressed(int btnCode);
 		virtual void UpdateF(float deltaTime);
 		void ShowScore();
+		void ShowGameOver();
 };

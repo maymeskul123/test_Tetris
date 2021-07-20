@@ -14,8 +14,7 @@ private:
 	int num;
 	bool direction;
 
-public:	
-	bool check;
+public:		
 	Glass *glass;
 	int x, y;	
 	int height, width;

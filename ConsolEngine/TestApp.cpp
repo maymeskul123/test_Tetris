@@ -14,21 +14,16 @@ TestApp::TestApp() : Parent(100, 80)
 	myFigure->glass = myGlass;
 	
 	char    buf[22], *p = buf;
-	sprintf(buf, "Score=%.14d ", score);
+	sprintf(buf, "Score=%.14d ", score);	
 	
-	//OutputDebugStringA(buf);
-	//char a[15];
-	//std::memset(a, '+', sizeof(a));
-	for (int col = 0; col < 22; col++) SetChar(col, 23, buf[col]);
-	
-	/*for (int row = 25; row < 35; row ++)
-		for (int col = 9; col < 20; col++) {
-			SetChar(col, row, L'!');
-		}*/
+	for (int col = 0; col < 22; col++) SetChar(col, 23, buf[col]);	
 }
 
 void TestApp::BottomEnd()
 {
+	if (myFigure->y <= 0) 
+		ShowGameOver();
+
 	myGlass->AddFigure(myFigure);
 	myFigure->~Figure();
 	score = score + myGlass->CheckBottom();
@@ -50,32 +45,24 @@ void TestApp::KeyPressed(int btnCode)
 		if (myFigure->MoveDown()) {
 			BottomEnd();
 		}
+	//else if (btnCode == 0x1c)
+			
 }
 
 void TestApp::UpdateF(float deltaTime)
 {	
-	myGlass->DrawGlass(this);
-
-	/*char    buf[4096], *p = buf;
-	sprintf(buf, "x= %d  y= %d \n", myFigure->x, myFigure->y);
-	OutputDebugStringA(buf);*/
-	
+	myGlass->DrawGlass(this);	
+	ShowScore();
 	if (curTime > endTime) {
 		curTime = 0.0;		
-		ShowScore();
 		if (myFigure->MoveDown()) {
 			BottomEnd();
-		}
-		/*char buf[4096], *p = buf;
-		sprintf(buf, "x %d   y %d \n", myFigure->x, myFigure->y);
-		OutputDebugStringA(buf);*/
+		}	
 	}
 	else {
 		curTime = curTime + deltaTime;
 	}
-	if (!myFigure->check) {
-		myFigure->ShowFigure(this);
-	}
+	myFigure->ShowFigure(this);	
 }
 
 void TestApp::ShowScore()
@@ -83,4 +70,11 @@ void TestApp::ShowScore()
 	char    buf[22], *p = buf;
 	sprintf(buf, "Score=%.14d ", score);
 	for (int col = 0; col < 22; col++) SetChar(col, 23, buf[col]);
+}
+
+void TestApp::ShowGameOver()
+{
+	char    buf[8], *p = buf;
+	sprintf(buf, "GameOver");
+	for (int col = 0; col < 8; col++) SetChar(col, 23, buf[col]);
 }

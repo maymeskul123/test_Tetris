@@ -13,8 +13,7 @@ using namespace std;
 Figure::Figure()
 {
 	x = 8;	
-	y = 0;	
-	check = false;	
+	y = 0;
 	RandFigure();
 }
 
@@ -124,11 +123,7 @@ void Figure::Rotation(bool check)
 			swap(height, width);
 			direction = direction ^ true;
 		}
-	}
-
-	/*char    buf[4096], *p = buf;
-	sprintf(buf, " block %d\n", imposs);
-	OutputDebugStringA(buf);*/
+	}	
 }
 
 void Figure::MoveLeft()
@@ -163,8 +158,7 @@ void Figure::MoveRight()
 
 void Figure::MoveUp()
 {
-	y--;
-	check = false;
+	y--;	
 }
 
 bool Figure::MoveDown()
@@ -185,15 +179,6 @@ bool Figure::MoveDown()
 	else block = true;
 	return block;
 }
-
-	/*bool block = false;
-	block = glass->CheckBlock(this);
-	if (!block) y = y++;*/
-	
-	/*char    buf[4096], *p = buf;
-	sprintf(buf, "%d\n", block);
-	OutputDebugStringA(buf);
-	*/
 
 Figure::~Figure()
 {
