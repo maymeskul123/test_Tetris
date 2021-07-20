@@ -19,39 +19,40 @@ Glass::Glass()
 
 void Glass::DrawGlass(TestApp * window)
 {
-	for (int l = 0; l < height_border; l++) {
-		for (int c = 0; c < width_border; c++) {						
-			if ((c == 0) || (c == 16) || (l == 0) || (l == 21))
-			{
-				window->SetChar(c, l, L'#');
-			}				
+	if (window->GetState() == 1) {
+		for (int l = 0; l < height_border; l++) {
+			for (int c = 0; c < width_border; c++) {
+				if ((c == 0) || (c == 16) || (l == 0) || (l == 21))
+				{
+					window->SetChar(c, l, L'#');
+				}
+			}
 		}
-	}
 
-	for (int row = 0; row < height_data; row++) {
-		for (int col = 0; col < width_data; col++)	{
-			if (dataGlass[row][col] == '1') {
-				window->SetChar(col + 1, row + 1, '1');
+
+
+		for (int row = 0; row < height_data; row++) {
+			for (int col = 0; col < width_data; col++) {
+				if (dataGlass[row][col] == '1') {
+					window->SetChar(col + 1, row + 1, '1');
+				}
+				else {
+					window->SetChar(col + 1, row + 1, ' ');
+				}
 			}
-			else {
-				window->SetChar(col + 1, row + 1, ' ');
-			}
-			
 		}
 	}
 }
 
 void Glass::AddFigure(Figure *fig)
-{
-	//add_fig = true;
+{	
 	for (int row = 0; row < fig->height; row++) {
 		for (int col = 0; col < fig->width; col++) {
 			if (fig->figure[row * fig->width + col] == '1') {
 				dataGlass[fig->y + row][fig->x + col] = '1';
 			}
 		}
-	}
-	//add_fig = false;
+	}	
 }
 
 int Glass::CheckBottom()
@@ -66,9 +67,8 @@ int Glass::CheckBottom()
 		for (int row = height_data - 1; row >= 0; row--)
 		{
 			bool save_line = false;
-			int fill_str[15];
-			std::memset(fill_str, '1', 15 * sizeof(int));
-			save_line = (dataGlass[row] == &fill_str[15]);
+			int fill_str[15] = {'1'};
+			//std::memset(fill_str, '1', 15 * sizeof(int));			
 			for (int n : dataGlass[row]) {
 				if (n != '1') save_line = true;
 				if (save_line)break;

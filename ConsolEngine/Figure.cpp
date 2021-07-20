@@ -86,14 +86,16 @@ void Figure::RandFigure()
 
 void Figure::ShowFigure(TestApp * window)
 {	
-	for (int row = 0; row < height; row++) {
-		for (int col = 0; col < width; col++) {
-			if (figure[row * width + col] == '1') {
-				window->SetChar(x + col+1, y + row+1, figure[row * width + col]);
+	if (window->GetState() == 1) {
+		for (int row = 0; row < height; row++) {
+			for (int col = 0; col < width; col++) {
+				if (figure[row * width + col] == '1') {
+					window->SetChar(x + col + 1, y + row + 1, figure[row * width + col]);
+				}
+				/*else {
+					window->SetChar(x + col , y + row, '0');
+				}*/
 			}
-			/*else {
-				window->SetChar(x + col , y + row, '0');
-			}*/
 		}
 	}
 }
@@ -103,10 +105,11 @@ void Figure::Rotation(bool check)
 	int* dst = new int [height * width];
 	
 	int i, j;
-	for (i = 0; i < width; i++)
-		for (j = 0; j < height; j++)
+	for (i = 0; i < width; i++) {
+		for (j = 0; j < height; j++) {
 			dst[i * height + j] = figure[j *width + width - i - 1];
-	
+		}
+	}
 	
 	swap(figure, dst);
 	swap(height, width);
@@ -181,6 +184,5 @@ bool Figure::MoveDown()
 }
 
 Figure::~Figure()
-{
-	free(this);
+{	
 }

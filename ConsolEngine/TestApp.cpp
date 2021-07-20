@@ -5,24 +5,28 @@
 
 TestApp::TestApp() : Parent(100, 80)
 {	
+	state = 0; //0 - menu 1 - game start 2 - gameover
 	score = 0;
 	endTime = 2.0;
-	curTime = 0.0;
-	
-	myFigure = new Figure();	
+	curTime = 0.0;	
+}
+
+void TestApp::InitStart() {
+	myFigure = new Figure();
 	myGlass = new Glass();
 	myFigure->glass = myGlass;
-	
-	char    buf[22], *p = buf;
-	sprintf(buf, "Score=%.14d ", score);	
-	
-	for (int col = 0; col < 22; col++) SetChar(col, 23, buf[col]);	
+}
+
+int TestApp::GetState()
+{
+	return state;
 }
 
 void TestApp::BottomEnd()
 {
-	if (myFigure->y <= 0) 
-		ShowGameOver();
+	if (myFigure->y <= 0) {
+		state = 2;
+	}
 
 	myGlass->AddFigure(myFigure);
 	myFigure->~Figure();
@@ -33,36 +37,63 @@ void TestApp::BottomEnd()
 
 void TestApp::KeyPressed(int btnCode)
 {	
-	if (btnCode == 119) //w		
-		myFigure->MoveUp();
-	else if (btnCode == 97) //a
-		myFigure->MoveLeft();
-	else if (btnCode == 100) //d
-		myFigure->MoveRight();
-	else if (btnCode == 32) // |____|
-		myFigure->Rotation(true);
-	else if (btnCode == 115) //s		
-		if (myFigure->MoveDown()) {
-			BottomEnd();
+	if (state = 1) {
+		if (btnCode == 119) //w		
+			myFigure->MoveUp();
+		else if (btnCode == 97) //a
+			myFigure->MoveLeft();
+		else if (btnCode == 100) //d
+			myFigure->MoveRight();
+		else if (btnCode == 32) // |____|
+			myFigure->Rotation(true);
+		else if (btnCode == 115) //s		
+			if (myFigure->MoveDown()) {
+				BottomEnd();
+			}
+	}
+	
+	if (btnCode == 0x1c) {
+		if (state == 0 || state == 2) {			
+			InitStart();
+			state = 1;
 		}
-	//else if (btnCode == 0x1c)
-			
+	}
+	
 }
 
 void TestApp::UpdateF(float deltaTime)
 {	
-	myGlass->DrawGlass(this);	
-	ShowScore();
-	if (curTime > endTime) {
-		curTime = 0.0;		
-		if (myFigure->MoveDown()) {
-			BottomEnd();
-		}	
+	switch (state) {
+	
+		//Menu
+	case 0: {
+		ShowStartMenu();
+		break;
 	}
-	else {
-		curTime = curTime + deltaTime;
+		//Start
+	case 1: {
+		myGlass->DrawGlass(this);
+		ShowScore();
+		if (curTime > endTime) {
+			curTime = 0.0;
+			if (myFigure->MoveDown()) {
+				BottomEnd();
+			}
+		}
+		else {
+			curTime = curTime + deltaTime;
+		}
+		myFigure->ShowFigure(this);
+		break;
 	}
-	myFigure->ShowFigure(this);	
+	
+			//GameOver
+	case 2: {
+		ShowGameOver();
+		break;
+	}
+	}
+	
 }
 
 void TestApp::ShowScore()
@@ -73,8 +104,16 @@ void TestApp::ShowScore()
 }
 
 void TestApp::ShowGameOver()
+
 {
-	char    buf[8], *p = buf;
+	char    buf[15], *p = buf;
 	sprintf(buf, "GameOver");
-	for (int col = 0; col < 8; col++) SetChar(col, 23, buf[col]);
+	for (int col = 0; col < 15; col++) SetChar(col, 23, buf[col]);
+}
+
+void TestApp::ShowStartMenu()
+{
+	char    buf[30], *p = buf;
+	sprintf(buf, "For START Press ENTER");
+	for (int col = 0; col < 30; col++) SetChar(col, 15, buf[col]);
 }

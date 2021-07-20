@@ -1,10 +1,10 @@
 #pragma once
-class TestApp;
-class Glass;
-
 //class Figure;
 #include <cstdlib>
 #include <vector>
+
+class TestApp;
+class Glass;
 
 using namespace std;
 
