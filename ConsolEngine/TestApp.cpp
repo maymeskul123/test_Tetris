@@ -125,7 +125,7 @@ void TestApp::ShowGameOver()
 	sprintf(buf, "GameOver               ");
 	for (int col = 0; col < 23; col++) SetChar(col, 23, buf[col]);
 		
-	sprintf(buf, "Again Start Press Enter");
+	sprintf(buf, "Start Again Press Enter");
 	for (int col = 0; col < 23; col++) SetChar(col, 24, buf[col]);
 }
 
