@@ -82,7 +82,7 @@ void TestApp::UpdateF(float deltaTime)
 			break;
 		}
 			//Start
-		case 1: {
+		case 1: {			
 			gameGlass->DrawGlass(this);
 			ShowScore();
 			ShowNextFigure();
@@ -102,6 +102,7 @@ void TestApp::UpdateF(float deltaTime)
 				//GameOver
 		case 2: {
 			ShowGameOver();
+			score = 0;
 			break;
 		}
 	}
