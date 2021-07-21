@@ -39,7 +39,13 @@ void TestApp::BottomEnd()
 	currentFigure->~Figure();
 	score = score + gameGlass->CheckBottom();	
 	currentFigure = nextFigure;
-	nextFigure = new Figure(gameGlass);	
+
+	for (int row = 5; row < 9; row++) {
+		for (int col = 23; col < 28; col++) {
+			SetChar(col, row, ' ');
+		}
+	}
+	nextFigure = new Figure(gameGlass);
 }
 
 void TestApp::KeyPressed(int btnCode)
@@ -79,6 +85,7 @@ void TestApp::UpdateF(float deltaTime)
 		case 1: {
 			gameGlass->DrawGlass(this);
 			ShowScore();
+			ShowNextFigure();
 			if (curTime > endTime) {
 				curTime = 0.0;
 				if (currentFigure->MoveDown()) {
@@ -129,6 +136,10 @@ void TestApp::ShowStartMenu()
 }
 
 void TestApp::ShowNextFigure()
-{
-
+{		
+	for (int row = 0; row < nextFigure->height; row++) {
+		for (int col = 0; col < nextFigure->width; col++) {			
+			SetChar(23 + col, 5 + row, nextFigure->figure[row * nextFigure->width + col]);
+		}
+	}
 }
