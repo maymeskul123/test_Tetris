@@ -20,13 +20,13 @@ public:
 	int height, width;
 	int* figure;
 	vector<int> GetElements(int);
-	void RandFigure();
+	void GetFigure(int numFigure, bool direction);
 	void ShowFigure(TestApp*);
-	void Rotation(bool);
+	void Rotation();
 	void MoveLeft();
 	void MoveUp();
 	bool MoveDown();
 	void MoveRight();	
-	Figure();
+	Figure(int num, bool dir);
 	~Figure();
 };

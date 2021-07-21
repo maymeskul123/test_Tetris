@@ -18,8 +18,7 @@ Glass::Glass()
 }
 
 void Glass::DrawGlass(TestApp * window)
-{
-	if (window->GetState() == 1) {
+{	
 		for (int l = 0; l < height_border; l++) {
 			for (int c = 0; c < width_border; c++) {
 				if ((c == 0) || (c == 16) || (l == 0) || (l == 21))
@@ -28,8 +27,6 @@ void Glass::DrawGlass(TestApp * window)
 				}
 			}
 		}
-
-
 
 		for (int row = 0; row < height_data; row++) {
 			for (int col = 0; col < width_data; col++) {
@@ -41,7 +38,7 @@ void Glass::DrawGlass(TestApp * window)
 				}
 			}
 		}
-	}
+	
 }
 
 void Glass::AddFigure(Figure *fig)
@@ -66,18 +63,19 @@ int Glass::CheckBottom()
 	
 		for (int row = height_data - 1; row >= 0; row--)
 		{
-			bool save_line = false;
-			int fill_str[15] = {'1'};
-			//std::memset(fill_str, '1', 15 * sizeof(int));			
+			bool save_line = false;					
 			for (int n : dataGlass[row]) {
 				if (n != '1') save_line = true;
 				if (save_line)break;
 			}
 		
 			if (save_line) {
-				dst = &buff[index][0];
+				for (int i = 0; i < 15; i++) {
+					buff[index][i] = dataGlass[row][i];
+				}				
+				/*dst = &buff[index][0];
 				src = &dataGlass[row][0];
-				std::memmove(dst, src, 15 * sizeof(int));
+				std::memcpy(dst, src, 15 * sizeof(int));*/
 				index--;				
 			}else score = score + 100;
 		}
@@ -86,14 +84,10 @@ int Glass::CheckBottom()
 		sprintf(buf, "index = %d  \n", index);
 		OutputDebugStringA(buf);*/
 		
-		int a[15];
-		std::memset(a, ' ', sizeof(a));
-		
-		while (index >= 0) {
-			//std::memset(Buff[index], ' ', 15 * sizeof(int));
-			dst = &buff[index][0];
-			src = &a[0];
-			std::memmove(dst, src, 15 * sizeof(int));
+		while (index >= 0) {			
+			for (int i = 0; i < 15; i++) {
+				buff[index][i] = ' ';
+			}			
 			index--;
 		}
 		swap(buff, dataGlass);

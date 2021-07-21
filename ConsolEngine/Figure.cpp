@@ -3,24 +3,15 @@
 #include "Glass.h"
 #include<vector>
 #include <cstdlib>
-#include <time.h>
+
 #include <list>
 #include <sstream>
 #include <algorithm>
 
 using namespace std;
 
-Figure::Figure()
-{
-	x = 8;	
-	y = 0;
-	RandFigure();
-}
+vector<vector<int>> figures = {
 
-vector<int> Figure::GetElements(int numFigure)
-{	
-	vector<vector<int>> figures = {
-	
 		{'1', ' ', ' ',
 		'1', '1', '1'}
 		,
@@ -40,21 +31,22 @@ vector<int> Figure::GetElements(int numFigure)
 		'1', '1'
 		},
 		{'1', '1', '1', '1'}
-	};	
-	
+};
+
+Figure::Figure(int num, bool dir)
+{
+	x = 8;	
+	y = 0;
+	GetFigure(num, dir);
+}
+
+vector<int> Figure::GetElements(int numFigure)
+{	
 	return figures[numFigure];
 }
 
-void Figure::RandFigure()
+void Figure::GetFigure(int num, bool dir)
 {	
-	srand(time(0));
-	num = rand() % 7;
-	//num = 1;
-
-	char    buf[4096], *p = buf;
-	sprintf(buf, "num= %d \n", num);
-	OutputDebugStringA(buf);
-	
 	if (num != 6 && num != 5) {
 		height = 2;
 		width = 3;
@@ -78,29 +70,20 @@ void Figure::RandFigure()
 		figure[index] = n;
 		index++;		
 	}
-
-	srand(time(0));
-	direction = rand() % 2;
-	if (direction) Rotation(false);
 }
 
 void Figure::ShowFigure(TestApp * window)
-{	
-	if (window->GetState() == 1) {
-		for (int row = 0; row < height; row++) {
-			for (int col = 0; col < width; col++) {
-				if (figure[row * width + col] == '1') {
-					window->SetChar(x + col + 1, y + row + 1, figure[row * width + col]);
-				}
-				/*else {
-					window->SetChar(x + col , y + row, '0');
-				}*/
-			}
+{
+	for (int row = 0; row < height; row++) {
+		for (int col = 0; col < width; col++) {
+			if (figure[row * width + col] == '1') {
+				window->SetChar(x + col + 1, y + row + 1, figure[row * width + col]);
+			}				
 		}
-	}
+	}	
 }
 
-void Figure::Rotation(bool check)
+void Figure::Rotation()
 {	
 	int* dst = new int [height * width];
 	
@@ -113,19 +96,20 @@ void Figure::Rotation(bool check)
 	
 	swap(figure, dst);
 	swap(height, width);
-	direction = direction ^ true;
-	if (check) {
-		bool imposs = false;
-		for (int row = 0; row < height; row++) {
-			for (int col = 0; col < width; col++) {
-				imposs = ((figure[row * width + col] == '1') && (glass->dataGlass[y + row][x + col] == '1')) || ((x + width > 15) || (x < 0) || (y > 20));
+	direction = direction ^ true;	
+	bool imposs = false;
+	for (int row = 0; row < height; row++) {
+		for (int col = 0; col < width; col++) {
+			if (((figure[row * width + col] == '1') && (glass->dataGlass[y + row][x + col] == '1')) || ((x + width > 15) || (x < 0) || (y > 20))) {
+				imposs = true;
 			}
+				
 		}
-		if (imposs) {
-			swap(figure, dst);
-			swap(height, width);
-			direction = direction ^ true;
-		}
+	}
+	if (imposs) {
+		swap(figure, dst);
+		swap(height, width);
+		direction = direction ^ true;
 	}	
 }
 
@@ -136,9 +120,9 @@ void Figure::MoveLeft()
 		for (int row = 0; row < height; row++) {
 			block = block || ((figure[row *width] == '1') && (glass->dataGlass[y + row][x - 1] == '1'));
 
-			char    buf[4096], *p = buf;
+			/*char    buf[4096], *p = buf;
 			sprintf(buf, " block %d\n", block);
-			OutputDebugStringA(buf);
+			OutputDebugStringA(buf);*/
 		}
 		if(!block)x--;
 	}
@@ -151,9 +135,9 @@ void Figure::MoveRight()
 		for (int row = 0; row < height; row++) {
 			block = block || ((figure[row *width + width - 1] == '1') && (glass->dataGlass[y + row][x + width] == '1'));
 		
-			char    buf[4096], *p = buf;
+			/*char    buf[4096], *p = buf;
 			sprintf(buf, " block %d\n", block);
-			OutputDebugStringA(buf);
+			OutputDebugStringA(buf);*/
 		}
 		if (!block)x++;	
 	}
@@ -172,9 +156,9 @@ bool Figure::MoveDown()
 			for (int col = 0; col < width; col++) {
 				block = block || ((figure[row *width + col] == '1') && (glass->dataGlass[y + row + 1][x + col] == '1'));
 
-				char    buf[4096], *p = buf;
+				/*char    buf[4096], *p = buf;
 				sprintf(buf, " block %d\n", block);
-				OutputDebugStringA(buf);
+				OutputDebugStringA(buf);*/
 			}
 		}
 		if (!block)y++;

@@ -6,15 +6,20 @@
 #include "Figure.h"
 #include "Glass.h"
 
+struct Figura {
+	int num;
+	bool direction;
+};
+
 class TestApp : public BaseApp
 {
 	typedef BaseApp Parent;
 
 	private:
 		int score;
-		float curTime, endTime;
-		bool mDirection;	
+		float curTime, endTime;		
 		int state;
+		Figura currentFigure, nextFigure;
 
 	public:
 		Figure *myFigure;
@@ -26,6 +31,7 @@ class TestApp : public BaseApp
 		void ShowScore();
 		void ShowGameOver();
 		void ShowStartMenu();
+		void ShowNextFigure();
 		void InitStart();
 		int GetState();
 };
