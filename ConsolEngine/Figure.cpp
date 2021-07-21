@@ -1,9 +1,9 @@
 #include "Figure.h"
 #include "TestApp.h"
 #include "Glass.h"
+#include <time.h>
 #include<vector>
 #include <cstdlib>
-
 #include <list>
 #include <sstream>
 #include <algorithm>
@@ -33,13 +33,12 @@ vector<vector<int>> figures = {
 		{'1', '1', '1', '1'}
 };
 
-Figure::Figure(int num, bool dir, Glass* to_glass)
+Figure::Figure(Glass* to_glass)
 {
 	glass = to_glass;
 	x = 8;	
 	y = 0;
-	GetFigure(num, dir);
-	
+	RandFigure();
 }
 
 vector<int> Figure::GetElements(int numFigure)
@@ -47,8 +46,11 @@ vector<int> Figure::GetElements(int numFigure)
 	return figures[numFigure];
 }
 
-void Figure::GetFigure(int num, bool dir)
+void Figure::RandFigure()
 {	
+	srand(time(0));
+	num = rand() % 7;
+
 	if (num != 6 && num != 5) {
 		height = 2;
 		width = 3;
@@ -70,14 +72,12 @@ void Figure::GetFigure(int num, bool dir)
 	int index = 0;
 	for (int n : b) {
 		figure[index] = n;
-		index++;		
+		index++;
 	}
-
-	if (direction) {
-		direction = dir;
-		Rotation();
-	}
-		
+	srand(time(0));
+	direction = rand() % 2;		
+	if (direction){
+		Rotation();	}
 }
 
 void Figure::ShowFigure(TestApp * window)
@@ -110,7 +110,7 @@ void Figure::Rotation()
 		for (int col = 0; col < width; col++) {
 			if (((figure[row * width + col] == '1') && (glass->dataGlass[y + row][x + col] == '1')) || ((x + width > 15) || (x < 0) || (y > 20))) {
 				imposs = true;
-			}				
+			}
 		}
 	}
 	if (imposs) {
@@ -175,5 +175,6 @@ bool Figure::MoveDown()
 }
 
 Figure::~Figure()
-{	
+{
+	delete figure;
 }

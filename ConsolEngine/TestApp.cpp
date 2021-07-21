@@ -2,27 +2,26 @@
 
 #include "TestApp.h"
 #include "Figure.h"
-#include <time.h>
 
 TestApp::TestApp() : Parent(32, 28)
 {	
+	
+	/*for (int i = 0; i < 7; i++) {
+		char s[100];
+		sprintf(s, "Element %d rows %d columns %d\n",i, figures[i].size(), figures[i][0].size());
+		OutputDebugStringA(s);
+	}*/
+	
 	state = 0; //0 - menu 1 - game start 2 - gameover
 	score = 0;
 	endTime = 2.0;
 	curTime = 0.0;	
 }
 
-void TestApp::InitStart() {
-	srand(time(0));
-	currentFigure.num = rand() % 7;
-	srand(time(0));
-	currentFigure.direction = rand() % 2; //true - vertical (is Rotation)
-	srand(time(0));
-	nextFigure.num = rand() % 7;
-	srand(time(0));
-	nextFigure.direction = rand() % 2;	
-	myGlass = new Glass();	
-	myFigure = new Figure(currentFigure.num, currentFigure.direction, myGlass);
+void TestApp::InitStart() {	
+	gameGlass = new Glass();	
+	currentFigure = new Figure(gameGlass);
+	nextFigure = new Figure(gameGlass);
 }
 
 int TestApp::GetState()
@@ -32,35 +31,29 @@ int TestApp::GetState()
 
 void TestApp::BottomEnd()
 {
-	if (myFigure->y <= 0) {
+	if (currentFigure->y <= 0) {
 		state = 2;
 	}
 
-	myGlass->AddFigure(myFigure);
-	myFigure->~Figure();
-	score = score + myGlass->CheckBottom();
-	
-	myFigure = new Figure(nextFigure.num, nextFigure.direction, myGlass);
+	gameGlass->AddFigure(currentFigure);
+	currentFigure->~Figure();
+	score = score + gameGlass->CheckBottom();	
 	currentFigure = nextFigure;
-
-	srand(time(0));
-	nextFigure.num = rand() % 7;
-	srand(time(0));
-	nextFigure.direction = rand() % 2;	
+	nextFigure = new Figure(gameGlass);	
 }
 
 void TestApp::KeyPressed(int btnCode)
 {	
 	if (btnCode == 119 && state == 1) //w		
-		myFigure->MoveUp();
+		currentFigure->MoveUp();
 	else if (btnCode == 97 && state == 1) //a
-		myFigure->MoveLeft();
+		currentFigure->MoveLeft();
 	else if (btnCode == 100 && state == 1) //d
-		myFigure->MoveRight();
+		currentFigure->MoveRight();
 	else if (btnCode == 32 && state == 1) // |____|
-		myFigure->Rotation();
+		currentFigure->Rotation();
 	else if (btnCode == 115 && state == 1) //s		
-		if (myFigure->MoveDown()) {
+		if (currentFigure->MoveDown()) {
 			BottomEnd();
 		}
 		
@@ -77,33 +70,33 @@ void TestApp::UpdateF(float deltaTime)
 {	
 	switch (state) {
 	
-		//Menu
-	case 0: {
-		ShowStartMenu();
-		break;
-	}
-		//Start
-	case 1: {
-		myGlass->DrawGlass(this);
-		ShowScore();
-		if (curTime > endTime) {
-			curTime = 0.0;
-			if (myFigure->MoveDown()) {
-				BottomEnd();
+			//Menu
+		case 0: {
+			ShowStartMenu();
+			break;
+		}
+			//Start
+		case 1: {
+			gameGlass->DrawGlass(this);
+			ShowScore();
+			if (curTime > endTime) {
+				curTime = 0.0;
+				if (currentFigure->MoveDown()) {
+					BottomEnd();
+				}
 			}
+			else {
+				curTime = curTime + deltaTime;
+			}
+			currentFigure->ShowFigure(this);
+			break;
 		}
-		else {
-			curTime = curTime + deltaTime;
-		}
-		myFigure->ShowFigure(this);
-		break;
-	}
 	
-			//GameOver
-	case 2: {
-		ShowGameOver();
-		break;
-	}
+				//GameOver
+		case 2: {
+			ShowGameOver();
+			break;
+		}
 	}
 	
 }

@@ -6,11 +6,6 @@
 #include "Figure.h"
 #include "Glass.h"
 
-struct Figura {
-	int num;
-	bool direction;
-};
-
 class TestApp : public BaseApp
 {
 	typedef BaseApp Parent;
@@ -19,11 +14,10 @@ class TestApp : public BaseApp
 		int score;
 		float curTime, endTime;		
 		int state;
-		Figura currentFigure, nextFigure;
 
 	public:
-		Figure *myFigure;
-		Glass * myGlass;
+		Figure *currentFigure, *nextFigure;
+		Glass * gameGlass;
 		TestApp();
 		void BottomEnd();
 		virtual void KeyPressed(int btnCode);
