@@ -27,6 +27,6 @@ public:
 	void MoveUp();
 	bool MoveDown();
 	void MoveRight();	
-	Figure(int num, bool dir);
+	Figure(int num, bool dir, Glass*);
 	~Figure();
 };

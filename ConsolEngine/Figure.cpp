@@ -33,11 +33,13 @@ vector<vector<int>> figures = {
 		{'1', '1', '1', '1'}
 };
 
-Figure::Figure(int num, bool dir)
+Figure::Figure(int num, bool dir, Glass* to_glass)
 {
+	glass = to_glass;
 	x = 8;	
 	y = 0;
 	GetFigure(num, dir);
+	
 }
 
 vector<int> Figure::GetElements(int numFigure)
@@ -70,6 +72,12 @@ void Figure::GetFigure(int num, bool dir)
 		figure[index] = n;
 		index++;		
 	}
+
+	if (direction) {
+		direction = dir;
+		Rotation();
+	}
+		
 }
 
 void Figure::ShowFigure(TestApp * window)
@@ -96,21 +104,20 @@ void Figure::Rotation()
 	
 	swap(figure, dst);
 	swap(height, width);
-	direction = direction ^ true;	
+	direction = direction ^ true;
 	bool imposs = false;
 	for (int row = 0; row < height; row++) {
 		for (int col = 0; col < width; col++) {
 			if (((figure[row * width + col] == '1') && (glass->dataGlass[y + row][x + col] == '1')) || ((x + width > 15) || (x < 0) || (y > 20))) {
 				imposs = true;
-			}
-				
+			}				
 		}
 	}
 	if (imposs) {
 		swap(figure, dst);
 		swap(height, width);
 		direction = direction ^ true;
-	}	
+	}
 }
 
 void Figure::MoveLeft()

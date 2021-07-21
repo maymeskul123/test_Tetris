@@ -16,19 +16,13 @@ void TestApp::InitStart() {
 	srand(time(0));
 	currentFigure.num = rand() % 7;
 	srand(time(0));
-	currentFigure.direction = rand() % 2; //true - horizontal
-
+	currentFigure.direction = rand() % 2; //true - vertical (is Rotation)
 	srand(time(0));
 	nextFigure.num = rand() % 7;
 	srand(time(0));
-	nextFigure.direction = rand() % 2;
-	
-	//if (direction) Rotation(false);
-
-	//num = 1;
-	myFigure = new Figure(currentFigure.num, currentFigure.direction);
-	myGlass = new Glass();
-	myFigure->glass = myGlass;
+	nextFigure.direction = rand() % 2;	
+	myGlass = new Glass();	
+	myFigure = new Figure(currentFigure.num, currentFigure.direction, myGlass);
 }
 
 int TestApp::GetState()
@@ -46,15 +40,13 @@ void TestApp::BottomEnd()
 	myFigure->~Figure();
 	score = score + myGlass->CheckBottom();
 	
-	myFigure = new Figure(nextFigure.num, nextFigure.direction);
+	myFigure = new Figure(nextFigure.num, nextFigure.direction, myGlass);
 	currentFigure = nextFigure;
 
 	srand(time(0));
 	nextFigure.num = rand() % 7;
 	srand(time(0));
-	nextFigure.direction = rand() % 2;
-	
-	myFigure->glass = myGlass;
+	nextFigure.direction = rand() % 2;	
 }
 
 void TestApp::KeyPressed(int btnCode)
