@@ -108,7 +108,7 @@ void Figure::Rotation()
 	bool imposs = false;
 	for (int row = 0; row < height; row++) {
 		for (int col = 0; col < width; col++) {
-			if (((figure[row * width + col] == '1') && (glass->dataGlass[y + row][x + col] == '1')) || ((x + width > 15) || (x < 0) || (y > 20))) {
+			if (((figure[row * width + col] == '1') && (glass->dataGlass[y + row][x + col] == '1')) || ((x + width > 15) || (x < 0) || (y + height > 20))) {
 				imposs = true;
 			}
 		}
