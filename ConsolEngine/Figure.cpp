@@ -77,14 +77,16 @@ void Figure::RandFigure()
 	srand(time(0));
 	direction = rand() % 2;		
 	if (direction){
-		Rotation();	}
+		Rotation();		
+	}
+	y = y - height;
 }
 
 void Figure::ShowFigure(TestApp * window)
 {
 	for (int row = 0; row < height; row++) {
 		for (int col = 0; col < width; col++) {
-			if (figure[row * width + col] == '1') {
+			if (figure[row * width + col] == '1' && y + row + 1 > 0) {
 				window->SetChar(x + col + 1, y + row + 1, figure[row * width + col]);
 			}				
 		}
