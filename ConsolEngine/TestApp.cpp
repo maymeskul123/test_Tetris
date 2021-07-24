@@ -15,7 +15,8 @@ TestApp::TestApp() : Parent(32, 28)
 	state = 0; //0 - menu 1 - game start 2 - gameover
 	score = 0;
 	endTime = 2.0;
-	curTime = 0.0;	
+	curTime = 0.0;
+	turboDown = false;
 }
 
 void TestApp::InitStart() {	
@@ -45,30 +46,36 @@ void TestApp::BottomEnd()
 			SetChar(col, row, ' ');
 		}
 	}
-	nextFigure = new Figure(gameGlass);
+	endTime = 2.0;
+	turboDown = false;
+	nextFigure = new Figure(gameGlass);	
 }
 
 void TestApp::KeyPressed(int btnCode)
 {	
-	if (btnCode == 119 && state == 1) //w		
-		currentFigure->MoveUp();
-	else if (btnCode == 97 && state == 1) //a
+	//if (btnCode == 119 && state == 1) //w
+	//	currentFigure->MoveUp();
+	if (btnCode == 97 && state == 1 && !turboDown) //a
 		currentFigure->MoveLeft();
-	else if (btnCode == 100 && state == 1) //d
+	else if (btnCode == 100 && state == 1 && !turboDown) //d
 		currentFigure->MoveRight();
-	else if (btnCode == 32 && state == 1) // |____|
+	else if (btnCode == 32 && state == 1 && !turboDown) // |____|
 		currentFigure->Rotation();
-	else if (btnCode == 115 && state == 1) //s		
+	else if (btnCode == 115 && state == 1) {
+		turboDown = true;
 		if (currentFigure->MoveDown()) {
 			BottomEnd();
+			endTime = 0.1;
+			turboDown = true;
 		}
+	} //s		
 		
 	if (btnCode == 13) {
 		if (state == 0 || state == 2) {			
 			for (int col = 0; col < 30; col++) SetChar(col, 15, ' ');
 			InitStart();
 			state = 1;
-		}		
+		}
 	}
 }
 
@@ -85,7 +92,7 @@ void TestApp::UpdateF(float deltaTime)
 		case 1: {			
 			gameGlass->DrawGlass(this);
 			ShowScore();
-			ShowNextFigure();
+			ShowNextFigure();			
 			if (curTime > endTime) {
 				curTime = 0.0;
 				if (currentFigure->MoveDown()) {
@@ -93,7 +100,12 @@ void TestApp::UpdateF(float deltaTime)
 				}
 			}
 			else {
-				curTime = curTime + deltaTime;
+				if (turboDown) {
+					curTime = (curTime + deltaTime)*5;
+				}
+				else {
+					curTime = curTime + deltaTime;
+				}				
 			}
 			currentFigure->ShowFigure(this);
 			break;

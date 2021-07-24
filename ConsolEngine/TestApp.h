@@ -12,8 +12,9 @@ class TestApp : public BaseApp
 
 	private:
 		int score;
-		float curTime, endTime;		
+		float curTime, endTime;
 		int state;
+		bool turboDown;
 
 	public:
 		Figure *currentFigure, *nextFigure;

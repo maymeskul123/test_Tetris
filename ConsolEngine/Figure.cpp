@@ -88,7 +88,7 @@ void Figure::ShowFigure(TestApp * window)
 				window->SetChar(x + col + 1, y + row + 1, figure[row * width + col]);
 			}				
 		}
-	}	
+	}
 }
 
 void Figure::Rotation()
