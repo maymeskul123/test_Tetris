@@ -1,7 +1,7 @@
 #include "Figure.h"
 #include "TestApp.h"
 #include "Glass.h"
-#include <time.h>
+#include <ctime>
 #include<vector>
 #include <cstdlib>
 #include <list>
@@ -48,6 +48,8 @@ vector<int> Figure::GetElements(int numFigure)
 
 void Figure::RandFigure()
 {	
+	srand(time(0));
+	Sleep(rand() % 500);
 	srand(time(0));
 	num = rand() % 7;
 

@@ -2,6 +2,7 @@
 
 #include "TestApp.h"
 #include "Figure.h"
+#include <ctime>
 
 TestApp::TestApp() : Parent(32, 28)
 {	
@@ -14,8 +15,7 @@ TestApp::TestApp() : Parent(32, 28)
 	
 	state = 0; //0 - menu 1 - game start 2 - gameover
 	score = 0;
-	speed = 4.0;
-	//curTime = 0.0;
+	speed = 4.0;	
 	shiftPath = 0;
 	turboDown = false;
 }
@@ -23,7 +23,8 @@ TestApp::TestApp() : Parent(32, 28)
 void TestApp::InitStart() {	
 	gameGlass = new Glass();	
 	currentFigure = new Figure(gameGlass);
-	Sleep(1);
+	srand(time(0));
+	Sleep(rand()%500);
 	nextFigure = new Figure(gameGlass);
 }
 
@@ -49,6 +50,7 @@ void TestApp::BottomEnd()
 		}
 	}	
 	turboDown = false;
+	speed = 2.0;
 	nextFigure = new Figure(gameGlass);	
 }
 
@@ -64,9 +66,11 @@ void TestApp::KeyPressed(int btnCode)
 		currentFigure->Rotation();
 	else if (btnCode == 115 && state == 1) {
 		turboDown = true;
+		speed = 15.0;
 		if (currentFigure->MoveDown()) {
 			BottomEnd();			
 			turboDown = true;
+			
 		}
 	} //s		
 		
@@ -101,12 +105,6 @@ void TestApp::UpdateF(float deltaTime)
 				}
 			}
 			else {
-				if (turboDown) {
-					speed = 15.0;
-				}
-				else {
-					speed = 2.0;
-				}
 				shiftPath += deltaTime * speed;
 			}
 			
