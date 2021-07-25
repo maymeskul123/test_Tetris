@@ -11,8 +11,8 @@ class TestApp : public BaseApp
 	typedef BaseApp Parent;
 
 	private:
-		int score;
-		float curTime, endTime;
+		int score;		
+		float shiftPath, speed;
 		int state;
 		bool turboDown;
 

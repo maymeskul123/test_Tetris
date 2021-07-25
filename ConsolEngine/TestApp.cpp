@@ -14,14 +14,16 @@ TestApp::TestApp() : Parent(32, 28)
 	
 	state = 0; //0 - menu 1 - game start 2 - gameover
 	score = 0;
-	endTime = 2.0;
-	curTime = 0.0;
+	speed = 4.0;
+	//curTime = 0.0;
+	shiftPath = 0;
 	turboDown = false;
 }
 
 void TestApp::InitStart() {	
 	gameGlass = new Glass();	
 	currentFigure = new Figure(gameGlass);
+	Sleep(1);
 	nextFigure = new Figure(gameGlass);
 }
 
@@ -45,8 +47,7 @@ void TestApp::BottomEnd()
 		for (int col = 23; col < 28; col++) {
 			SetChar(col, row, ' ');
 		}
-	}
-	endTime = 2.0;
+	}	
 	turboDown = false;
 	nextFigure = new Figure(gameGlass);	
 }
@@ -64,8 +65,7 @@ void TestApp::KeyPressed(int btnCode)
 	else if (btnCode == 115 && state == 1) {
 		turboDown = true;
 		if (currentFigure->MoveDown()) {
-			BottomEnd();
-			endTime = 0.1;
+			BottomEnd();			
 			turboDown = true;
 		}
 	} //s		
@@ -92,21 +92,24 @@ void TestApp::UpdateF(float deltaTime)
 		case 1: {			
 			gameGlass->DrawGlass(this);
 			ShowScore();
-			ShowNextFigure();			
-			if (curTime > endTime) {
-				curTime = 0.0;
+			ShowNextFigure();
+
+			if (shiftPath > 1.0) {
+				shiftPath = 0.0;
 				if (currentFigure->MoveDown()) {
 					BottomEnd();
 				}
 			}
 			else {
 				if (turboDown) {
-					curTime = (curTime + deltaTime)*5;
+					speed = 15.0;
 				}
 				else {
-					curTime = curTime + deltaTime;
-				}				
+					speed = 2.0;
+				}
+				shiftPath += deltaTime * speed;
 			}
+			
 			currentFigure->ShowFigure(this);
 			break;
 		}
@@ -118,7 +121,6 @@ void TestApp::UpdateF(float deltaTime)
 			break;
 		}
 	}
-	
 }
 
 void TestApp::ShowScore()
