@@ -7,6 +7,7 @@
 #include <list>
 #include <sstream>
 #include <algorithm>
+#include<random>
 
 using namespace std;
 
@@ -48,10 +49,18 @@ vector<int> Figure::GetElements(int numFigure)
 
 void Figure::RandFigure()
 {	
-	srand(time(0));
-	Sleep(rand() % 500);
-	srand(time(0));
-	num = rand() % 7;
+	/*srand(time(NULL));*/
+	std::random_device dev;
+	std::mt19937 rng(dev());
+	std::uniform_int_distribution<std::mt19937::result_type> dist6(0, 6); // distribution in range [0, 6]
+
+	std::cout << dist6(rng) << std::endl;
+	char    buf[4096], *p = buf;
+	sprintf(buf, "Number %d\n", dist6(rng));
+	OutputDebugStringA(buf);
+	
+	//num = rand() % 7;
+	num = dist6(rng);
 
 	if (num != 6 && num != 5) {
 		height = 2;
@@ -76,8 +85,10 @@ void Figure::RandFigure()
 		figure[index] = n;
 		index++;
 	}
-	srand(time(0));
-	direction = rand() % 2;		
+	
+	std::uniform_int_distribution<std::mt19937::result_type> dist2(0, 1); // distribution in range [0, 1]
+	direction = dist2(rng);
+	//direction = rand() % 2;
 	if (direction){
 		Rotation();		
 	}

@@ -22,9 +22,7 @@ TestApp::TestApp() : Parent(32, 28)
 
 void TestApp::InitStart() {	
 	gameGlass = new Glass();	
-	currentFigure = new Figure(gameGlass);
-	srand(time(0));
-	Sleep(rand()%500);
+	currentFigure = new Figure(gameGlass);	
 	nextFigure = new Figure(gameGlass);
 }
 
